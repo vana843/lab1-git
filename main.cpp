@@ -27,7 +27,7 @@ void printLine() {
 
 void printHeader() {
     printLine();
-    cout << "|   Калькулятор 66:             |\n";
+    cout << "|   Вариант 66: Программа для расчетов            |\n";
     cout << "|   Килограммы <-> Фунты                   |\n";
     printLine();
 }
