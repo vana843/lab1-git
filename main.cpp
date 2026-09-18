@@ -3,7 +3,8 @@
 // Конвертер массы: килограммы <-> фунты.
 
 #include <iostream>
-#include <windows.h>   // для SetConsoleOutputCP (кириллица в консоли Windows)
+#include <iomanip>     // для setprecision, fixed
+#include <windows.h>   // для SetConsoleOutputCP (кириллица)
 
 using namespace std;
 
@@ -19,41 +20,86 @@ double lbToKg(double lb) {
     return lb / 2.20462;
 }
 
+// ===== Вспомогательная функция: рамка =====
+void printLine() {
+    cout << "+------------------------------------------+\n";
+}
+
+void printHeader() {
+    printLine();
+    cout << "|   Вариант 66: конвертер массы            |\n";
+    cout << "|   Килограммы <-> Фунты                   |\n";
+    printLine();
+}
+
 // ===== Главная функция: меню =====
 int main() {
-    SetConsoleOutputCP(65001);   // вывод в UTF-8
-    SetConsoleCP(65001);         // ввод в UTF-8
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
+
+    // Формат вывода чисел: 4 знака после запятой
+    cout << fixed << setprecision(4);
 
     int choice;
     double value;
+    double result;
 
     do {
-        cout << "\n== Вариант 66: конвертер массы ==\n";
-        cout << "1. Килограммы -> фунты\n";
-        cout << "2. Фунты -> килограммы\n";
-        cout << "0. Выход\n";
+        printHeader();
+        cout << "| 1. Килограммы -> фунты                   |\n";
+        cout << "| 2. Фунты -> килограммы                   |\n";
+        cout << "| 0. Выход                                 |\n";
+        printLine();
         cout << "Выберите пункт: ";
         cin >> choice;
 
+        // Проверка на некорректный ввод
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "\n[Ошибка] Введите число, а не текст.\n";
+            continue;
+        }
+
         switch (choice) {
             case 1:
-                cout << "Введите массу в килограммах: ";
+                cout << "\nВведите массу в килограммах: ";
                 cin >> value;
-                cout << value << " кг = " << kgToLb(value) << " фунтов\n";
+                if (cin.fail() || value < 0) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "[Ошибка] Масса не может быть отрицательной.\n";
+                    break;
+                }
+                result = kgToLb(value);
+                cout << "\nРезультат:\n";
+                cout << "  " << value << " кг  =  " << result << " фунтов\n";
+                cout << "  (коэффициент: 1 кг = 2.20462 фунта)\n";
                 break;
 
             case 2:
-                cout << "Введите массу в фунтах: ";
+                cout << "\nВведите массу в фунтах: ";
                 cin >> value;
-                cout << value << " фунтов = " << lbToKg(value) << " кг\n";
+                if (cin.fail() || value < 0) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "[Ошибка] Масса не может быть отрицательной.\n";
+                    break;
+                }
+                result = lbToKg(value);
+                cout << "\nРезультат:\n";
+                cout << "  " << value << " фунтов  =  " << result << " кг\n";
+                cout << "  (коэффициент: 1 фунт = 0.453592 кг)\n";
                 break;
 
             case 0:
-                cout << "Работа завершена.\n";
+                cout << "\nРабота завершена. До свидания!\n";
                 break;
 
             default:
-                cout << "Такого пункта нет.\n";
+                cout << "\n[Ошибка] Такого пункта нет. Введите 0, 1 или 2.\n";
         }
     } while (choice != 0);
+
+    return 0;
 }
