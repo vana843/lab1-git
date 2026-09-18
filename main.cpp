@@ -27,7 +27,7 @@ void printLine() {
 
 void printHeader() {
     printLine();
-    cout << "|   Вариант 66: конвертер массы            |\n";
+    cout << "|   Вариант 66: Программа для расчетов            |\n";
     cout << "|   Килограммы <-> Фунты                   |\n";
     printLine();
 }
